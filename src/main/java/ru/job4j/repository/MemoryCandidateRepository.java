@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class MemoryCandidateRepository implements CandidateRepository {
 
     private static final MemoryCandidateRepository INSTANCE = new MemoryCandidateRepository();
