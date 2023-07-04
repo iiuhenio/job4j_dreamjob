@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Candidate;
 import ru.job4j.repository.CandidateRepository;
 import ru.job4j.repository.MemoryCandidateRepository;
-import ru.job4j.repository.MemoryVacancyRepository;
-import ru.job4j.repository.VacancyRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
