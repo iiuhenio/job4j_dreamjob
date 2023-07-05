@@ -4,20 +4,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Candidate;
-import ru.job4j.repository.CandidateRepository;
-import ru.job4j.repository.MemoryCandidateRepository;
 import ru.job4j.service.CandidateService;
-import ru.job4j.service.SimpleCandidateService;
-import ru.job4j.service.VacancyService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/candidates") /* Работать с кандидатами будем по URI /candidates/** */
 public class CandidateController {
 
-    private final CandidateService candidateService = SimpleCandidateService.getInstance();
+    private final CandidateService candidateService;
+
+    public CandidateController(CandidateService candidateService) {
+        this.candidateService = candidateService;
+    }
 
     @GetMapping
     public String getAll(Model model) {

@@ -1,5 +1,6 @@
 package ru.job4j.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.job4j.model.Vacancy;
 
 import javax.xml.crypto.Data;
@@ -9,26 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class MemoryVacancyRepository implements VacancyRepository {
-
-    private static final MemoryVacancyRepository INSTANCE = new MemoryVacancyRepository();
 
     private int nextId = 1;
 
     private final Map<Integer, Vacancy> vacancies = new HashMap<>();
 
-    private MemoryVacancyRepository() {
-        save(new Vacancy(0, "Intern Java Developer", "описание", LocalDateTime.now()));
-        save(new Vacancy(0, "Junior Java Developer", "описание", LocalDateTime.now()));
-        save(new Vacancy(0, "Junior+ Java Developer",  "описание", LocalDateTime.now()));
-        save(new Vacancy(0, "Middle Java Developer",  "описание", LocalDateTime.now()));
-        save(new Vacancy(0, "Middle+ Java Developer",  "описание", LocalDateTime.now()));
-        save(new Vacancy(0, "Senior Java Developer",  "описание", LocalDateTime.now()));
+    public MemoryVacancyRepository() {
+        save(new Vacancy(0, "Intern Java Developer", "Стажер разработчик", LocalDateTime.now()));
+        save(new Vacancy(0, "Junior Java Developer", "Младший разработчик", LocalDateTime.now()));
+        save(new Vacancy(0, "Junior+ Java Developer", "Java разработчик", LocalDateTime.now()));
+        save(new Vacancy(0, "Middle Java Developer", "Старший разработчик", LocalDateTime.now()));
+        save(new Vacancy(0, "Middle+ Java Developer", "Ведущий разработчик", LocalDateTime.now()));
+        save(new Vacancy(0, "Senior Java Developer", "Главный разработчик", LocalDateTime.now()));
     }
 
-    public static MemoryVacancyRepository getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public Vacancy save(Vacancy vacancy) {

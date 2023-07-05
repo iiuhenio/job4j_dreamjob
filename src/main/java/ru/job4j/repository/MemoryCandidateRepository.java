@@ -13,23 +13,17 @@ import java.util.Optional;
 @Repository
 public class MemoryCandidateRepository implements CandidateRepository {
 
-    private static final MemoryCandidateRepository INSTANCE = new MemoryCandidateRepository();
-
     private int nextId = 1;
 
     private final Map<Integer, Candidate> candidates = new HashMap<>();
 
     private MemoryCandidateRepository() {
-        save(new Candidate(0, "Intern Java Developer", "описание", LocalDateTime.now()));
-        save(new Candidate(0, "Junior Java Developer", "описание", LocalDateTime.now()));
-        save(new Candidate(0, "Junior+ Java Developer",  "описание", LocalDateTime.now()));
-        save(new Candidate(0, "Middle Java Developer",  "описание", LocalDateTime.now()));
-        save(new Candidate(0, "Middle+ Java Developer",  "описание", LocalDateTime.now()));
-        save(new Candidate(0, "Senior Java Developer",  "описание", LocalDateTime.now()));
-    }
-
-    public static MemoryCandidateRepository getInstance() {
-        return INSTANCE;
+        save(new Candidate(0, "Intern Java Developer", "Стажер", LocalDateTime.now()));
+        save(new Candidate(0, "Junior Java Developer", "Младший сотрудник", LocalDateTime.now()));
+        save(new Candidate(0, "Junior+ Java Developer",  "Старший сотрудник", LocalDateTime.now()));
+        save(new Candidate(0, "Middle Java Developer",  "Заместитель", LocalDateTime.now()));
+        save(new Candidate(0, "Middle+ Java Developer",  "Ведущий програмист", LocalDateTime.now()));
+        save(new Candidate(0, "Senior Java Developer",  "Главный сотрудник", LocalDateTime.now()));
     }
 
     @Override
