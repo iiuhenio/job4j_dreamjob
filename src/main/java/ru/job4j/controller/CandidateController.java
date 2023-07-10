@@ -5,18 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Candidate;
 import ru.job4j.service.CandidateService;
-import ru.job4j.service.CityService;
 
 @Controller
 @RequestMapping("/candidates") /* Работать с кандидатами будем по URI /candidates/** */
 public class CandidateController {
 
     private final CandidateService candidateService;
-    private final CityService cityService;
 
-    public CandidateController(CandidateService candidateService, CityService cityService) {
+    public CandidateController(CandidateService candidateService) {
         this.candidateService = candidateService;
-        this.cityService = cityService;
     }
 
     @GetMapping
@@ -26,9 +23,14 @@ public class CandidateController {
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model) {
-        model.addAttribute("cities", cityService.findAll());
+    public String getCreationPage() {
         return "candidates/create";
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute Candidate candidate) {
+        candidateService.save(candidate);
+        return "redirect:/candidates";
     }
 
     @GetMapping("/{id}")
@@ -38,7 +40,6 @@ public class CandidateController {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
-        model.addAttribute("cities", cityService.findAll());
         model.addAttribute("candidate", candidateOptional.get());
         return "candidates/one";
     }

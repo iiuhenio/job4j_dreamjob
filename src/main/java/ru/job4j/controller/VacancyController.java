@@ -4,18 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Vacancy;
-import ru.job4j.service.CityService;
+import ru.job4j.repository.MemoryVacancyRepository;
+import ru.job4j.repository.VacancyRepository;
 import ru.job4j.service.VacancyService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/vacancies")
 public class VacancyController {
     private final VacancyService vacancyService;
-    private final CityService cityService;
 
-    public VacancyController(VacancyService vacancyService, CityService cityService) {
+    public VacancyController(VacancyService vacancyService) {
         this.vacancyService = vacancyService;
-        this.cityService = cityService;
     }
 
     @GetMapping
@@ -25,8 +27,7 @@ public class VacancyController {
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model) {
-        model.addAttribute("cities", cityService.findAll());
+    public String getCreationPage() {
         return "vacancies/create";
     }
 
@@ -43,7 +44,6 @@ public class VacancyController {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
             return "errors/404";
         }
-        model.addAttribute("cities", cityService.findAll());
         model.addAttribute("vacancy", vacancyOptional.get());
         return "vacancies/one";
     }
