@@ -72,9 +72,12 @@ public class Sql2oCandidateRepositoryTest {
     @Test
     public void whenSaveSeveralThenGetAll() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var candidate1 = sql2oCandidateRepository.save(new Candidate(0, "name1", "description1", creationDate, 1, file.getId()));
-        var candidate2 = sql2oCandidateRepository.save(new Candidate(0, "name2", "description2", creationDate, 1, file.getId()));
-        var candidate3 = sql2oCandidateRepository.save(new Candidate(0, "name3", "description3", creationDate, 1, file.getId()));
+        var candidate1 = sql2oCandidateRepository.save(new Candidate(0, "name1",
+                "description1", creationDate, 1, file.getId()));
+        var candidate2 = sql2oCandidateRepository.save(new Candidate(0, "name2",
+                "description2", creationDate, 1, file.getId()));
+        var candidate3 = sql2oCandidateRepository.save(new Candidate(0, "name3",
+                "description3", creationDate, 1, file.getId()));
         var result = sql2oCandidateRepository.findAll();
         assertThat(result).isEqualTo(List.of(candidate1, candidate2, candidate3));
     }
@@ -104,7 +107,8 @@ public class Sql2oCandidateRepositoryTest {
     @Test
     public void whenUpdateThenGetUpdated() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var candidate = sql2oCandidateRepository.save(new Candidate(0, "name", "description",
+        var candidate = sql2oCandidateRepository.save(new Candidate(0, "name",
+                "description",
                 creationDate, 1, file.getId()));
         var updatedCandidate = new Candidate(
                 candidate.getId(), "new name", "new description", creationDate.plusDays(1),
@@ -119,7 +123,8 @@ public class Sql2oCandidateRepositoryTest {
     @Test
     public void whenUpdateUnExistingVacancyThenGetFalse() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var candidate = new Candidate(0, "title", "description", creationDate, 1, file.getId());
+        var candidate = new Candidate(0, "title", "description", creationDate,
+                1, file.getId());
         var isUpdated = sql2oCandidateRepository.update(candidate);
         assertThat(isUpdated).isFalse();
     }

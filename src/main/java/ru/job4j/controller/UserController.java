@@ -11,26 +11,35 @@ import ru.job4j.service.CityService;
 import ru.job4j.service.UserService;
 import ru.job4j.service.VacancyService;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    public UserController() {
+
+    }
+
     @GetMapping("/register")
-    public String getCreationPage(Model model) {
-        model.addAttribute("users");
+    public String getRegistrationPage() {
         return "users/register";
     }
 
     @PostMapping("/register")
-    public String create(@ModelAttribute User user) {
-        userService.save(user);
-        return "redirect:/users";
+    public String register(Model model, @ModelAttribute User user) {
+        var savedUser = userService.save(user);
+        if (savedUser.isEmpty()) {
+            model.addAttribute("message", "Пользователь с такой почтой уже существует");
+            return "errors/404";
+        }
+        return "redirect:/vacancies";
     }
 }
