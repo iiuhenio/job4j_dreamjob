@@ -4,6 +4,7 @@ import org.sql2o.Sql2o;
 import ru.job4j.model.Candidate;
 import ru.job4j.model.User;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class Sql2oUserRepository implements UserRepository {
@@ -18,17 +19,20 @@ public class Sql2oUserRepository implements UserRepository {
     public Optional<User> save(User user) {
         try (var connection = sql2o.open()) {
             var sql = """
-                      INSERT INTO users(email, name, password)
-                      VALUES (:email, :name, :password)
-                      """;
+                    INSERT INTO users(id, email, name, password)
+                    VALUES (:id, :email, :name, :password)
+                    """;
             var query = connection.createQuery(sql, true)
+                    .addParameter("id", user.getId())
                     .addParameter("email", user.getEmail())
                     .addParameter("name", user.getName())
                     .addParameter("password", user.getPassword());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             user.setId(generatedId);
-            return Optional.of(user);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return Optional.of(user);
     }
 
     @Override
@@ -40,6 +44,35 @@ public class Sql2oUserRepository implements UserRepository {
             query.addParameter("password", password);
             var user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
             return Optional.ofNullable(user);
+        }
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM users WHERE id = :id");
+            query.addParameter("id", id);
+            var user = query.setColumnMappings(User.COLUMN_MAPPING)
+                    .executeAndFetchFirst(User.class);
+            return Optional.ofNullable(user);
+        }
+    }
+
+    @Override
+    public Collection<User> findAll() {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM users");
+            return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
+        }
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        try (var connection = sql2o.open()) {
+            var query = connection.createQuery("DELETE FROM users WHERE id = :id");
+            query.addParameter("id", id);
+            var affectedRows = query.executeUpdate().getResult();
+            return affectedRows > 0;
         }
     }
 }
