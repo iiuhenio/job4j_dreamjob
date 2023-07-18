@@ -24,25 +24,25 @@ public class CandidateController {
         this.cityService = cityService;
     }
 
-    @GetMapping
-    public String getAll(Model model, HttpSession session) {
+    public void getUser(HttpSession session) {
         var user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
+    }
+
+    @GetMapping
+    public String getAll(Model model, HttpSession session, User user) {
+        getUser(session);
         model.addAttribute("user", user);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
+    public String getCreationPage(Model model, HttpSession session, User user) {
+        getUser(session);
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.findAll());
         return "candidates/create";
@@ -60,7 +60,7 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public String getById(Model model, @PathVariable int id, HttpSession session) {
+    public String getById(Model model, @PathVariable int id, HttpSession session, User user) {
         var candidateOptional = candidateService.findById(id);
         if (candidateOptional.isEmpty()) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
@@ -68,11 +68,7 @@ public class CandidateController {
         }
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("candidate", candidateOptional.get());
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
+        getUser(session);
         model.addAttribute("user", user);
         return "candidates/one";
     }
@@ -94,17 +90,13 @@ public class CandidateController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable int id, HttpSession session) {
+    public String delete(Model model, @PathVariable int id, HttpSession session, User user) {
         var isDeleted = candidateService.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
+        getUser(session);
         model.addAttribute("user", user);
         return "redirect:/candidates";
     }

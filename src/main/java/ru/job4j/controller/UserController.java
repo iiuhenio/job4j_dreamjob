@@ -21,21 +21,22 @@ public class UserController {
 
     private final UserService userService;
 
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-
-    @GetMapping("/register")
-    public String getRegistrationPage(HttpSession session, Model model) {
+    public void getUser(HttpSession session) {
         var user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
-        model.addAttribute("user", user);
+    }
 
+    @GetMapping("/register")
+    public String getRegistrationPage(HttpSession session, Model model, User user) {
+        getUser(session);
+        model.addAttribute("user", user);
         return "users/register";
     }
 
@@ -50,12 +51,8 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(HttpSession session, Model model) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
+    public String getLoginPage(HttpSession session, Model model, User user) {
+        getUser(session);
         model.addAttribute("user", user);
         return "users/login";
     }
@@ -73,12 +70,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session, Model model) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
+    public String logout(HttpSession session, Model model, User user) {
+        getUser(session);
         model.addAttribute("user", user);
         session.invalidate();
         return "redirect:/users/login";

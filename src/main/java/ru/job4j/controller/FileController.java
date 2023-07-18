@@ -21,19 +21,22 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id, HttpSession session, Model model) {
-        var contentOptional = fileService.getFileById(id);
-        if (contentOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+    public void getUser(HttpSession session) {
         var user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable int id, HttpSession session, Model model, User user) {
+        var contentOptional = fileService.getFileById(id);
+        if (contentOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        getUser(session);
         model.addAttribute("user", user);
         return ResponseEntity.ok(contentOptional.get().getContent());
     }
-
 }
