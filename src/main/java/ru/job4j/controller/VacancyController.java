@@ -23,25 +23,15 @@ public class VacancyController {
         this.cityService = cityService;
     }
 
-    public void getUser(HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-    }
-
     @GetMapping
-    public String getAll(Model model, HttpSession session, User user) {
-        getUser(session);
+    public String getAll(Model model, User user) {
         model.addAttribute("user", user);
         model.addAttribute("vacancies", vacancyService.findAll());
         return "vacancies/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, HttpSession session, User user) {
-        getUser(session);
+    public String getCreationPage(Model model, User user) {
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.findAll());
         return "vacancies/create";
@@ -59,8 +49,8 @@ public class VacancyController {
     }
 
     @GetMapping("/{id}")
-    public String getById(Model model, @PathVariable int id, HttpSession session, User user) {
-        getUser(session);
+    public String getById(Model model, @PathVariable int id, User user) {
+
         var vacancyOptional = vacancyService.findById(id);
         if (vacancyOptional.isEmpty()) {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
@@ -88,8 +78,7 @@ public class VacancyController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable int id, HttpSession session, User user) {
-        getUser(session);
+    public String delete(Model model, @PathVariable int id, User user) {
         var isDeleted = vacancyService.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
