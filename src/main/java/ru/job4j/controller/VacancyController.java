@@ -24,14 +24,16 @@ public class VacancyController {
     }
 
     @GetMapping
-    public String getAll(Model model, User user) {
+    public String getAll(Model model) {
+        User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("vacancies", vacancyService.findAll());
         return "vacancies/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, User user) {
+    public String getCreationPage(Model model) {
+        User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.findAll());
         return "vacancies/create";

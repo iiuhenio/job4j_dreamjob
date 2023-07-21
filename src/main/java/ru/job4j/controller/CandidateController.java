@@ -24,17 +24,8 @@ public class CandidateController {
         this.cityService = cityService;
     }
 
-    public void getUser(HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-    }
-
     @GetMapping
     public String getAll(Model model, HttpSession session, User user) {
-        getUser(session);
         model.addAttribute("user", user);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
@@ -42,7 +33,6 @@ public class CandidateController {
 
     @GetMapping("/create")
     public String getCreationPage(Model model, HttpSession session, User user) {
-        getUser(session);
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.findAll());
         return "candidates/create";
@@ -68,7 +58,6 @@ public class CandidateController {
         }
         model.addAttribute("cities", cityService.findAll());
         model.addAttribute("candidate", candidateOptional.get());
-        getUser(session);
         model.addAttribute("user", user);
         return "candidates/one";
     }
@@ -96,7 +85,6 @@ public class CandidateController {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
-        getUser(session);
         model.addAttribute("user", user);
         return "redirect:/candidates";
     }
