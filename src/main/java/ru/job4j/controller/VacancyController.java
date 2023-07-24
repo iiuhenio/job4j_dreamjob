@@ -89,4 +89,5 @@ public class VacancyController {
         model.addAttribute("user", user);
         return "redirect:/vacancies";
     }
+
 }

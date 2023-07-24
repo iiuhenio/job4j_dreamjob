@@ -25,14 +25,14 @@ public class CandidateController {
     }
 
     @GetMapping
-    public String getAll(Model model, HttpSession session, User user) {
+    public String getAll(Model model, User user) {
         model.addAttribute("user", user);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, HttpSession session, User user) {
+    public String getCreationPage(Model model, User user) {
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.findAll());
         return "candidates/create";
@@ -79,7 +79,7 @@ public class CandidateController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable int id, HttpSession session, User user) {
+    public String delete(Model model, @PathVariable int id, User user) {
         var isDeleted = candidateService.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
@@ -88,4 +88,5 @@ public class CandidateController {
         model.addAttribute("user", user);
         return "redirect:/candidates";
     }
+
 }

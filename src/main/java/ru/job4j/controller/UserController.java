@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(HttpSession session, Model model, User user) {
+    public String getLoginPage(Model model, User user) {
         model.addAttribute("user", user);
         return "users/login";
     }
@@ -64,4 +64,5 @@ public class UserController {
         session.invalidate();
         return "redirect:/users/login";
     }
+
 }
