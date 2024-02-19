@@ -30,5 +30,4 @@ public class FileController {
         model.addAttribute("user", user);
         return ResponseEntity.ok(contentOptional.get().getContent());
     }
-
 }
