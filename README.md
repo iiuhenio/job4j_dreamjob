@@ -68,10 +68,9 @@ PostgreSQL 14.
 ![img_9.png](img_9.png)
 Рисунок 10. Страница ошибки.
 
-
 ### Контакты
 
 > email: [iuheniomail@yandex.ru](mailto:iuheniomail@yandex.ru) <br>
-> tl: [iiuhenio](https://t.me/iuhenio) <br>
+> tl: [iiuhenio](https://t.me/hoorayyapee) <br>
 > github.com: [iiuhenio](https://github.com/iiuhenio)
 
